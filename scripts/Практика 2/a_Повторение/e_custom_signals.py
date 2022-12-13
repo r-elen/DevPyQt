@@ -15,7 +15,7 @@
   (пароль можно показать в терминале в захешированном виде)
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore
 
 
 class Window(QtWidgets.QWidget):
@@ -23,11 +23,74 @@ class Window(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.initChild()
+        self.initUi()
+        self.initSignal()
+
+    def initUi(self):
+        self.label = QtWidgets.QLabel("Пройдите регистрацию")
+        self.pushButtonRegistration = QtWidgets.QPushButton("Регистрация")
+
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.label)
+        layout.addWidget(self.pushButtonRegistration)
+
+        self.setLayout(layout)
+
+    def initSignal(self):
+        self.pushButtonRegistration.clicked.connect(self.registrationDialog.exec)
+        self.registrationDialog.received.connect(
+            lambda received: self.label.setText((f"Добро пожаловать {received[0]}, ваш пароль {received[1]}")))
+
+    def initChild(self):
+        self.registrationDialog = RegistrationDialog()
+
+
+class RegistrationDialog(QtWidgets.QDialog):
+    received = QtCore.Signal(tuple)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.initUi()
+        self.initSignal()
+
+    def initUi(self):
+        self.lineEditLogin = QtWidgets.QLineEdit("")
+        self.lineEditLogin.setPlaceholderText("Введите логин")
+
+        self.lineEditPassword = QtWidgets.QLineEdit("")
+        self.lineEditPassword.setPlaceholderText("Введите пароль")
+
+        self.pushButton = QtWidgets.QPushButton("Зарегистрироваться")
+
+        layoutLineEdit = QtWidgets.QHBoxLayout()
+        layoutLineEdit.addWidget(self.lineEditLogin)
+        layoutLineEdit.addWidget(self.lineEditPassword)
+
+        layoutMain = QtWidgets.QVBoxLayout()
+        layoutMain.addLayout(layoutLineEdit)
+        layoutMain.addWidget(self.pushButton)
+
+        self.setLayout(layoutMain)
+
+    def initSignal(self):
+        self.pushButton.clicked.connect(self.onPushButtonClicked)
+
+    def onPushButtonClicked(self):
+        login = self.lineEditLogin.text()
+        password = self.lineEditPassword.text()
+
+        self.received.emit((login, password))
+
+        self.close()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
 
     window = Window()
+    # window = RegistrationDialog()
     window.show()
 
     app.exec()
