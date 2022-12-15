@@ -18,13 +18,37 @@
    в него соответствующие значения
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtGui
+from ui.d_eventfilter_settings import Ui_Form
 
 
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.ui = Ui_Form()
+        self.ui.setupUi(self)
+
+
+    ...
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        if event.text() == '+':
+            self.ui.dial.setValue(self.ui.dial.value + 1)
+        if event.text() == '-':
+            self.ui.dial.setValue(self.ui.dial.value - 1)
+
+
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+        """
+        Событие закрытия окна
+
+        :param event: QtGui.QCloseEvent
+        :return: None
+        """
+
+        self.settings.setValue("valueCombo", self.ui.comboBox.currentText())
 
 
 if __name__ == "__main__":
