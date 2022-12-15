@@ -3,6 +3,7 @@ from PySide6 import QtCore, QtWidgets, QtGui
 
 
 class MyDrawRect(QtWidgets.QWidget):
+
     def __init__(self, parent=None):
         super(MyDrawRect, self).__init__(parent)
         self.x1, self.y1 = 0, 0
@@ -29,4 +30,4 @@ if __name__ == "__main__":
     myapp = MyDrawRect()
     myapp.show()
 
-    app.exec_()
+    app.exec()

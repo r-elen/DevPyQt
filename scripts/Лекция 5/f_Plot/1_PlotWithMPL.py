@@ -50,27 +50,28 @@ class MainWindow(QtWidgets.QMainWindow):
         paramLayout.addWidget(self.spinBoxMax)
         paramLayout.addStretch(1)
 
+
+        title = QtWidgets.QLabel("MyGraph")
+        title.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        pb_close = QtWidgets.QPushButton('X')
+        pb_close.setObjectName("pb_close")
+        pb_close.setMaximumSize(22, 22)
+        pb_close.setMinimumSize(22, 22)
+        pb_close.clicked.connect(lambda: self.close())
+        pb_hide = QtWidgets.QPushButton('_')
+        pb_hide.setObjectName("pb_hide")
+        pb_hide.setMaximumSize(22, 22)
+        pb_hide.setMinimumSize(22, 22)
+        pb_hide.clicked.connect(lambda: self.showMinimized())
+
+        layout_title = QtWidgets.QHBoxLayout()
+        layout_title.addWidget(title, alignment=QtCore.Qt.AlignRight)
+        layout_title.addWidget(pb_hide)
+        layout_title.addWidget(pb_close)
+        layout_title.setAlignment(QtCore.Qt.AlignRight)
+        self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
+
         # SET STYLE
-        # title = QtWidgets.QLabel("MyGraph")
-        # title.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        # pb_close = QtWidgets.QPushButton('X')
-        # pb_close.setObjectName("pb_close")
-        # pb_close.setMaximumSize(22, 22)
-        # pb_close.setMinimumSize(22, 22)
-        # pb_close.clicked.connect(lambda: self.close())
-        # pb_hide = QtWidgets.QPushButton('_')
-        # pb_hide.setObjectName("pb_hide")
-        # pb_hide.setMaximumSize(22, 22)
-        # pb_hide.setMinimumSize(22, 22)
-        # pb_hide.clicked.connect(lambda: self.showMinimized())
-        #
-        # layout_title = QtWidgets.QHBoxLayout()
-        # layout_title.addWidget(title, alignment=QtCore.Qt.AlignRight)
-        # layout_title.addWidget(pb_hide)
-        # layout_title.addWidget(pb_close)
-        # layout_title.setAlignment(QtCore.Qt.AlignRight)
-        # self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
-        #
         # self.setStyleSheet("""
         # #pb_close {
         #     background-color: #bd93f9;
